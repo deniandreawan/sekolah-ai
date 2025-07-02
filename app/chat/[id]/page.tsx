@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import clsx from "clsx";
 import {
   ArrowLeftIcon,
@@ -31,7 +31,7 @@ export default function Chat() {
     }
   }, [getData, router]);
 
-  const { messages, input, setInput, handleSubmit, isLoading } = useChat({
+  const { messages, input, setInput, handleSubmit, status } = useChat({
     body: {
       topics: getData[0]?.title,
     },
@@ -49,7 +49,7 @@ export default function Chat() {
     `Apa itu ${getData[0]?.title}?`,
   ];
 
-  const disabled = isLoading || input.length === 0;
+  const disabled = status === "streaming" || input.length === 0;
 
   return (
     <main className="flex flex-col items-center justify-between pb-40">
@@ -150,7 +150,7 @@ export default function Chat() {
             )}
             disabled={disabled}
           >
-            {isLoading ? (
+            {status === "streaming" ? (
               <Loader2Icon className="animate-spin text-blue-600" />
             ) : (
               <SendIcon
@@ -163,7 +163,7 @@ export default function Chat() {
           </button>
         </form>
         <p className="text-center text-xs text-gray-400">
-          Dibuat oleh Dias Atmaja
+          Dibuat oleh Sekolah AI
         </p>
       </div>
     </main>
